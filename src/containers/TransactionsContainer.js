@@ -1,13 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose, withState, withHandlers } from 'recompose';
+import React from "react";
+import { connect } from "react-redux";
+import { compose, withState, withHandlers } from "recompose";
 
-import Button from '../components/button/Button';
-import TransactionModal from '../components/transaction-modal/TransactionModal';
+import Button from "../components/button/Button";
+import TransactionModal from "../components/transaction-modal/TransactionModal";
 
-
-const TransactionsContainer = ({onSwitchModal, isOpenModal}) => {
-    console.log(isOpenModal);
+const TransactionsContainer = ({ onSwitchModal, isOpenModal }) => {
+  console.log(isOpenModal);
   return (
     <div>
       <span>TransactionsContainer</span>
@@ -22,17 +21,18 @@ const TransactionsContainer = ({onSwitchModal, isOpenModal}) => {
         }
       </Button>
 
-        {isOpenModal && <TransactionModal />}
+      {isOpenModal && <TransactionModal onSwitchModal={onSwitchModal} />}
     </div>
   );
 };
 
 const enhance = compose(
-    connect(({main}) => ({isOpenButton: main.isOpenButton})),
-withState('isOpenModal', 'onSwitchModal', false),
-withHandlers({
-    onSwitchModal: ({onSwitchModal, isOpenModal}) => () => onSwitchModal(!isOpenModal)
-})
+  connect(({ main }) => ({ isOpenButton: main.isOpenButton })),
+  withState("isOpenModal", "onSwitchModal", false),
+  withHandlers({
+    onSwitchModal: ({ onSwitchModal, isOpenModal }) => () =>
+      onSwitchModal(!isOpenModal)
+  })
 );
 
 export default enhance(TransactionsContainer);
