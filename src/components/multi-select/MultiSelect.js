@@ -24,7 +24,8 @@ const MultiSelect = ({
     categoryType > 0 ? CATEGORYES_INCOME : CATEGORYES_EXPENSE;
   return (
     <div className='multiselect'>
-      <div tabIndex={1} className="multiselect__active" onClick={switchOpened}>
+      <span className='label'>Категория</span>
+      <div className="multiselect__active" onClick={switchOpened}>
           <TextIcon {...activeCategory} />
       </div>
       {isOpen && (

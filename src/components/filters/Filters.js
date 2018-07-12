@@ -1,14 +1,16 @@
-import React from 'react';
-import { compose, withState, withHandlers } from 'recompose';
-import moment from 'moment';
+import React from "react";
+import { compose, withState, withHandlers } from "recompose";
+import moment from "moment";
 
-import DatePicker from 'react-datepicker';
-import { TextField } from '@material-ui/core';
+import DatePicker from "react-datepicker";
+import { TextField } from "@material-ui/core";
 
-import MultiSelect from '../multi-select/MultiSelect';
-import { CATEGORYE_DEFAULT } from '../../constants';
+import MultiSelect from "../multi-select/MultiSelect";
+import { CATEGORYE_DEFAULT } from "../../constants";
 
-import { checkDate } from '../../helpers/utils';
+import { checkDate } from "../../helpers/utils";
+
+import "./filters.css";
 
 const Filters = ({
   transaction,
@@ -19,62 +21,73 @@ const Filters = ({
   setCategory,
   setDate,
   setValue,
-  children,
+  children
 }) => {
   let { date, description, value, category } = transaction;
   date = checkDate(date);
   return (
     <React.Fragment>
-      <MultiSelect
-        categoryType={categoryType}
-        setCategoryTypeIncome={setCategoryTypeIncome}
-        setCategoryTypeExpense={setCategoryTypeExpense}
-        activeCategory={category}
-        setCategory={setCategory}
-      />
+      <div className="filter__col">
+        <MultiSelect
+          categoryType={categoryType}
+          setCategoryTypeIncome={setCategoryTypeIncome}
+          setCategoryTypeExpense={setCategoryTypeExpense}
+          activeCategory={category}
+          setCategory={setCategory}
+        />
+        <div>
+          <span className="label">Дата</span>
+          <DatePicker selected={date} onChange={setDate} />
+        </div>
+      </div>
 
-      <DatePicker selected={date} onChange={setDate} />
+      <div className="filter__col">
+        <TextField
+          className={`${categoryType > 0 ? "positive" : "negative"}`}
+          id="value"
+          label="Сумма"
+          value={value}
+          onChange={setValue}
+          margin="normal"
+          type="number"
+        />
 
-      <TextField
-        id="value"
-        label="value"
-        value={value}
-        onChange={setValue}
-        margin="normal"
-        type="number"
-      />
+        <TextField
+          id="description"
+          label="Заметка"
+          value={description}
+          onChange={setDescription}
+          margin="normal"
+          rows="4"
+        />
+      </div>
 
-      <TextField
-        id="description"
-        label="description"
-        value={description}
-        onChange={setDescription}
-        margin="normal"
-      />
+      <div className="filter__col">
+        <TextField
+          id="currency"
+          label="Валюта"
+          value="UAH"
+          margin="normal"
+          disabled
+        />
+      </div>
 
-      <TextField
-        id="currency"
-        label="currency"
-        value="UAH"
-        margin="normal"
-        disabled
-      />
       {children(transaction)}
     </React.Fragment>
   );
 };
 
 const enhance = compose(
-  withState('transaction', 'setTransactionParam', ({ transaction }) => {
+  withState("transaction", "setTransactionParam", ({ transaction }) => {
     const defaultTransaction = {
       date: moment(),
-      description: '',
-      value: '',
-      category: CATEGORYE_DEFAULT,
+      description: "",
+      value: "",
+      category: CATEGORYE_DEFAULT
     };
     return transaction ? transaction : defaultTransaction;
   }),
-  withState('categoryType', 'setCategoryType', -1),
+  withState("categoryType", "setCategoryType", -1),
   withHandlers({
     setCategoryTypeIncome: ({ setCategoryType, transaction }) => () => {
       transaction.value =
@@ -93,14 +106,14 @@ const enhance = compose(
     setValue: ({ setTransactionParam, categoryType, transaction }) => e =>
       setTransactionParam({
         ...transaction,
-        value: Math.abs(Number(e.target.value)) * categoryType,
+        value: Math.abs(Number(e.target.value)) * categoryType
       }),
     setCategory: ({ setTransactionParam, transaction }) => category =>
       setTransactionParam({
         ...transaction,
-        category,
-      }),
-  }),
+        category
+      })
+  })
 );
 
 export default enhance(Filters);

@@ -1,10 +1,14 @@
-import React from 'react';
+import React from "react";
 
-const TextIcon = ({icon, name}) => {
-    return (<span>
-        <i className="material-icons">{icon}</i>
-        {name}
-    </span>)
+import './text-icon.css';
+
+const TextIcon = ({ icon, name, classIcon }) => {
+  return (
+    <div className='text-icon__wrap'>
+      <i className={`material-icons ${classIcon}`}>{icon}</i>
+      <span>{name}</span>
+    </div>
+  );
 };
 
 export default TextIcon;

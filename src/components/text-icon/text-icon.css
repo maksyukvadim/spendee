@@ -1,0 +1,5 @@
+.text-icon__wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

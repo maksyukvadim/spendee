@@ -1,16 +1,16 @@
-import React from 'react';
-import { compose, withHandlers } from 'recompose';
+import React from "react";
+import { compose, withHandlers } from "recompose";
 
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 
-import { Button } from '@material-ui/core';
+import { Button } from "@material-ui/core";
 
-import Modal from '../modal/Modal';
-import Filters from '../filters/Filters';
+import Modal from "../modal/Modal";
+import Filters from "../filters/Filters";
 
-import { validationTransaction } from '../../helpers/validation';
+import { validationTransaction } from "../../helpers/validation";
 
-import './transaction-modal.css';
+import "./transaction-modal.css";
 
 const TransactionModal = ({
   onSwitchModal,
@@ -19,24 +19,33 @@ const TransactionModal = ({
   transaction,
   setDescription,
   setValue,
-  onSaveTransaction,
+  onSaveTransaction
 }) => {
   return (
-    <Modal onClose={onSwitchModal} classNames='transaction_modal'>
+    <Modal onClose={onSwitchModal} classNames="transaction_modal">
       <Filters>
-          {(transaction) => <Button onClick={() =>onSaveTransaction(transaction)}>Добавить Транзакцию</Button>}
+        {transaction => (
+          <Button
+            disabled={!validationTransaction(transaction)}
+            onClick={() => onSaveTransaction(transaction)}
+          >
+            Добавить Транзакцию
+          </Button>
+        )}
       </Filters>
-
     </Modal>
   );
 };
 
 const enhance = compose(
   withHandlers({
-    onSaveTransaction: ({onSetTransaction }) => (transaction) =>
-      validationTransaction(transaction)
-        ? onSetTransaction({...transaction, id: +new Date()})
-        : () => {},
+    onSaveTransaction: ({ onSetTransaction, onSwitchModal }) => transaction => {
+        if(validationTransaction(transaction)) {
+            onSwitchModal();
+            onSetTransaction({ ...transaction, id: +new Date() })
+        }
+    }
+
   })
 );
 

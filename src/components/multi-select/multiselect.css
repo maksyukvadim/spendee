@@ -10,3 +10,7 @@
 .multiselect__list > .backdrop {
     opacity: 0;
 }
+
+.multiselect__active {
+    cursor: pointer;
+}

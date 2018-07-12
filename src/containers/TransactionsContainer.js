@@ -27,8 +27,7 @@ const TransactionsContainer = ({
 }) => {
   return (
     <div>
-      <span>TransactionsContainer</span>
-      <Button onClick={onSwitchModal}>
+      <Button onClick={onSwitchModal}  variant="contained" color="primary">
           Добавить
       </Button>
 
