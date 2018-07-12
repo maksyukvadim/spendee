@@ -1,0 +1,39 @@
+.balance__card {
+    position: relative;
+    width: 100%;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.balance__card_name {
+    display: block;
+    color: #324c5b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.balance__card_value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 24px;
+}
+
+
+
+
+.positive {
+    color: #2dba75 !important;
+}
+.positive_value::before {
+    content: "+";
+}
+
+.positive_value {
+    color: #2dba75 !important;
+}
+
+.negative {
+    color: #f14c52 !important;
+}

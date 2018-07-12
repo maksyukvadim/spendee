@@ -6,9 +6,9 @@
 }
 
 .positive input {
-    color: green !important;
+    color: #2dba75 !important;
 }
 
 .negative input {
-    color: red !important;
-}
+     color: #f14c52 !important;
+ }

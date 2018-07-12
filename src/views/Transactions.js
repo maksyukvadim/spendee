@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import TransactionsContainer from '../containers/TransactionsContainer';
+import TransactionsContainer from '../containers/TransactionsContainer'
 
 const Transactions = () => (
-    <div>
-        <TransactionsContainer />
-    </div>
-);
+  <div>
+    <TransactionsContainer />
+  </div>
+)
 
-export default Transactions;
+export default Transactions

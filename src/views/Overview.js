@@ -1,9 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const Overview = () => (
-    <div>
-        Overview
-    </div>
-);
+const Overview = () => <div>Overview</div>
 
-export default Overview;
+export default Overview

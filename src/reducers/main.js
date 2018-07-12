@@ -1,9 +1,9 @@
-import { handleActions } from 'redux-actions';
+import { handleActions } from 'redux-actions'
 
 const initilaState = {
   listTransactions: [],
   openedTransaction: null,
-};
+}
 
 export default handleActions(
   {
@@ -15,21 +15,21 @@ export default handleActions(
       ...state,
       listTransactions: state.listTransactions.map(item => {
         if (item.id === action.payload.id) {
-          return action.payload;
+          return action.payload
         }
-        return item;
+        return item
       }),
     }),
     SET_DELETE_TRANSACTION: (state, action) => ({
       ...state,
       listTransactions: state.listTransactions.filter(
-        item => item.id !== action.payload,
+        item => item.id !== action.payload
       ),
     }),
     SET_OPEN_TRANSACTION: (state, action) => ({
-        ...state,
-        openedTransaction: action.payload,
+      ...state,
+      openedTransaction: action.payload,
     }),
   },
-  initilaState,
-);
+  initilaState
+)

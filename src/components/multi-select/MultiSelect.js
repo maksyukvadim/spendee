@@ -1,15 +1,15 @@
-import React from 'react';
-import { withState, compose, withHandlers } from 'recompose';
+import React from 'react'
+import { withState, compose, withHandlers } from 'recompose'
 
-import { Button, List } from '@material-ui/core';
+import { Button, List } from '@material-ui/core'
 
-import MultiSelectItem from './MultiSelectItem';
-import Modal from '../modal/Modal';
+import MultiSelectItem from './MultiSelectItem'
+import Modal from '../modal/Modal'
 
-import { CATEGORYES_EXPENSE, CATEGORYES_INCOME } from '../../constants';
+import { CATEGORYES_EXPENSE, CATEGORYES_INCOME } from '../../constants'
 import TextIcon from '../text-icon/TextIcon'
 
-import './multiselect.css';
+import './multiselect.css'
 
 const MultiSelect = ({
   activeCategory,
@@ -20,13 +20,12 @@ const MultiSelect = ({
   isOpen,
   switchOpened,
 }) => {
-  const listCategory =
-    categoryType > 0 ? CATEGORYES_INCOME : CATEGORYES_EXPENSE;
+  const listCategory = categoryType > 0 ? CATEGORYES_INCOME : CATEGORYES_EXPENSE
   return (
-    <div className='multiselect'>
-      <span className='label'>Категория</span>
+    <div className="multiselect">
+      <span className="label">Категория</span>
       <div className="multiselect__active" onClick={switchOpened}>
-          <TextIcon {...activeCategory} />
+        <TextIcon {...activeCategory} />
       </div>
       {isOpen && (
         <Modal classNames="multiselect__list" onClose={switchOpened}>
@@ -39,21 +38,20 @@ const MultiSelect = ({
                 setCategory={setCategory}
                 switchOpened={switchOpened}
                 key={item.name}
-
               />
             ))}
           </List>
         </Modal>
       )}
     </div>
-  );
-};
+  )
+}
 
 const enhance = compose(
-    withState('isOpen', 'switchOpened', false),
-    withHandlers({
-        switchOpened: ({switchOpened, isOpen}) => () => switchOpened(!isOpen)
-    })
-);
+  withState('isOpen', 'switchOpened', false),
+  withHandlers({
+    switchOpened: ({ switchOpened, isOpen }) => () => switchOpened(!isOpen),
+  })
+)
 
-export default enhance(MultiSelect);
+export default enhance(MultiSelect)
