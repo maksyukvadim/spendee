@@ -1,35 +1,42 @@
-import React from "react";
-import { compose, withState, withHandlers } from "recompose";
+import React from 'react';
+import { compose, withHandlers } from 'recompose';
 
-import { Button, Select, MenuItem, Dialog } from "@material-ui/core";
-import { AccessAlarm } from "@material-ui/icons";
-import Modal from "../modal/Modal";
+import 'react-datepicker/dist/react-datepicker.css';
 
-const TransactionModal = ({ onSwitchModal, isOpenModal }) => {
+import { Button } from '@material-ui/core';
+
+import Modal from '../modal/Modal';
+import Filters from '../filters/Filters';
+
+import { validationTransaction } from '../../helpers/validation';
+
+import './transaction-modal.css';
+
+const TransactionModal = ({
+  onSwitchModal,
+  isOpenModal,
+  setDate,
+  transaction,
+  setDescription,
+  setValue,
+  onSaveTransaction,
+}) => {
   return (
-    <Modal onClose={onSwitchModal}>
-
-      <Select value={30}>
-        <MenuItem value={30}>
-          <AccessAlarm />
-        </MenuItem>
-        <MenuItem value={1}>2</MenuItem>
-        <MenuItem value={2}>3</MenuItem>
-        <MenuItem value={3}>4</MenuItem>
-      </Select>
-
+    <Modal onClose={onSwitchModal} classNames='transaction_modal'>
+      <Filters>
+          {(transaction) => <Button onClick={() =>onSaveTransaction(transaction)}>Добавить Транзакцию</Button>}
+      </Filters>
 
     </Modal>
   );
 };
 
 const enhance = compose(
-  withState("transaction", "setTransactionParam", {}),
   withHandlers({
-    setTransactionParam: ({ setTransactionParam, transaction }) => param =>
-      setTransactionParam({ ...transaction, ...param }),
-    onSaveTransaction: ({ transaction, onSaveTransaction }) => () =>
-      onSaveTransaction(transaction)
+    onSaveTransaction: ({onSetTransaction }) => (transaction) =>
+      validationTransaction(transaction)
+        ? onSetTransaction({...transaction, id: +new Date()})
+        : () => {},
   })
 );
 

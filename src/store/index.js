@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import trunk from 'redux-thunk';
+import persistState from 'redux-localstorage'
 
 import reducers from '../reducers';
 
@@ -9,7 +10,7 @@ const store = createStore(
     combineReducers({
         ...reducers
     }),
-    composeEnhancers(applyMiddleware(trunk))
+    composeEnhancers(applyMiddleware(trunk), persistState())
 );
 
 export default store;

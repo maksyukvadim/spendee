@@ -1,0 +1,12 @@
+.multiselect {
+    position: relative;
+    min-width: 250px;
+}
+
+.multiselect__list {
+    position: absolute;
+}
+
+.multiselect__list > .backdrop {
+    opacity: 0;
+}

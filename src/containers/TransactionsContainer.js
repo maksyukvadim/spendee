@@ -1,38 +1,90 @@
-import React from "react";
-import { connect } from "react-redux";
-import { compose, withState, withHandlers } from "recompose";
+import React from 'react';
+import { connect } from 'react-redux';
+import { compose, withState, withHandlers } from 'recompose';
 
-import Button from "../components/button/Button";
-import TransactionModal from "../components/transaction-modal/TransactionModal";
+import { Button } from '@material-ui/core';
+import TransactionModal from '../components/transaction-modal/TransactionModal';
+import TransactionsTable from '../components/transactions-table/TransactionsTable';
+import EditTransaction from '../components/edit-transaction/EditTransaction';
 
-const TransactionsContainer = ({ onSwitchModal, isOpenModal }) => {
-  console.log(isOpenModal);
+import {
+  setTransaction,
+  setChangeTransaction,
+  setDeleteTransaction,
+  setOpenTransaction,
+} from '../actions/main';
+
+const TransactionsContainer = ({
+  onSwitchModal,
+  isOpenModal,
+  onSetTransaction,
+  listTransactions,
+  onSetOpenTransaction,
+  onSetChangeTransaction,
+  onSetDeleteTransaction,
+  openedTransaction,
+  onClearOpenedTransaction,
+}) => {
   return (
     <div>
       <span>TransactionsContainer</span>
-      <Button text="Добавить" onPress={onSwitchModal}>
-        {
-          <img
-            src="http://simpleicon.com/wp-content/uploads/plus.png"
-            width="10px"
-            height="10px"
-            alt="asd"
-          />
-        }
+      <Button onClick={onSwitchModal}>
+          Добавить
       </Button>
 
-      {isOpenModal && <TransactionModal onSwitchModal={onSwitchModal} />}
+      {isOpenModal && (
+        <TransactionModal
+          onSetTransaction={onSetTransaction}
+          onSwitchModal={onSwitchModal}
+        />
+      )}
+        {openedTransaction && (
+            <EditTransaction
+                transaction={openedTransaction}
+                onChangeTransaction={onSetChangeTransaction}
+                onDeleteTransaction={onSetDeleteTransaction}
+                onClose={onClearOpenedTransaction}
+            />
+        )}
+      <TransactionsTable
+        onOpenTransaction={onSetOpenTransaction}
+        listTransactions={listTransactions}
+      />
     </div>
   );
 };
 
 const enhance = compose(
-  connect(({ main }) => ({ isOpenButton: main.isOpenButton })),
-  withState("isOpenModal", "onSwitchModal", false),
+  connect(
+    ({ main }) => ({
+      listTransactions: main.listTransactions,
+      openedTransaction: main.openedTransaction,
+    }),
+    dispatch => ({
+      onSetTransaction: transaction => dispatch(setTransaction(transaction)),
+      onSetChangeTransaction: transaction =>
+        dispatch(setChangeTransaction(transaction)),
+      onSetDeleteTransaction: id => dispatch(setDeleteTransaction(id)),
+      onSetOpenTransaction: transaction =>
+        dispatch(setOpenTransaction(transaction)),
+    }),
+  ),
+  withState('isOpenModal', 'onSwitchModal', false),
   withHandlers({
     onSwitchModal: ({ onSwitchModal, isOpenModal }) => () =>
-      onSwitchModal(!isOpenModal)
-  })
+      onSwitchModal(!isOpenModal),
+      onClearOpenedTransaction: ({ onSetOpenTransaction }) => () =>
+          onSetOpenTransaction(null),
+      onSetChangeTransaction: ({onSetChangeTransaction, onSetOpenTransaction}) => (t) => {
+          onSetOpenTransaction(null);
+          onSetChangeTransaction(t);
+      },
+      onSetDeleteTransaction: ({onSetDeleteTransaction, onSetOpenTransaction}) => (id) => {
+          onSetOpenTransaction(null);
+          onSetDeleteTransaction(id);
+      }
+  }),
+
 );
 
 export default enhance(TransactionsContainer);
